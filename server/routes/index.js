@@ -9,8 +9,8 @@ export default function routes(app){
     const {url} = req.db
     const {collectionName} = req.params
     getModel(url).insertOne(collectionName, req.body)
-    .then((data)=> res.json(data))
-    .catch((err) => console.log(err))
+    .then( data => res.json(data))
+    .catch( err => console.log(err))
   })
 
   app.get(`${baseUrl}/:id`, (req, res) => {
@@ -41,13 +41,13 @@ export default function routes(app){
     .catch((err) => console.log(error))
   })
 
-  app.put(baseUrl, (req, res) => {
-    const {url, query, methods} = req.db
-    const {collectionName} = req.params
-    getModel(url).update(collectionName, query, req.body)
-    .then((data) => res.json(data))
-    .catch((err) => console.log(err))
-  })
+  // app.put(baseUrl, (req, res) => {
+  //   const {url, query, methods} = req.db
+  //   const {collectionName} = req.params
+  //   getModel(url).update(collectionName, query, req.body)
+  //   .then((data) => res.json(data))
+  //   .catch((err) => console.log(err))
+  // })
 
   app.delete(`${baseUrl}/:id`, (req, res) => {
     const {url} = req.db
@@ -58,13 +58,13 @@ export default function routes(app){
     .catch((err) => console.log(error))
   })
 
-  app.delete(baseUrl, (req, res) => {
-    const {url, query, methods} = req.db
-    const {collectionName} = req.params
-    getModel(url).remove(collectionName, query, req.body)
-    .then((data) => res.json(data))
-    .catch((err) => console.log(err))
-  })
+  // app.delete(baseUrl, (req, res) => {
+  //   const {url, query, methods} = req.db
+  //   const {collectionName} = req.params
+  //   getModel(url).remove(collectionName, query, req.body)
+  //   .then((data) => res.json(data))
+  //   .catch((err) => console.log(err))
+  // })
   //注册
   app.post(signin, (req, res) => {
     const {username, password} = req.body
