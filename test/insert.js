@@ -3,9 +3,10 @@ import _ from 'lodash'
 import server from './server'
 import {genUser, genMessage} from './util'
 import {signup} from './base'
+import fetch from 'supertest-as-promised'
 
 
-export function insert(message, cb) {
+export function signup_insert(message, cb) {
   signup(genUser())
   .end((err,res) => {
     res.status.should.equal(200)
@@ -19,7 +20,8 @@ export function insert(message, cb) {
   })
 }
 
-function insertWithoutAuthorization(message, cb) {
+
+function insert(message, cb) {
   server
   .post("/db/mocha/collection/mocha")
   .send(message)
@@ -31,7 +33,7 @@ function insertWithoutAuthorization(message, cb) {
 describe("插入", () => {
   it("用户名注册后插入信息应该成功", (done) => {
     const message = genMessage()
-    insert(message, (err, res) => {
+    signup_insert(message, (err, res) => {
       res.status.should.equal(200);
       res.body.name.should.equal(message.name)
       done();
@@ -40,7 +42,7 @@ describe("插入", () => {
 
   it("没有登录插入应该会失败", (done) => {
     const message = genMessage()
-    insertWithoutAuthorization(message, (err, res) => {
+    insert(message, (err, res) => {
       res.status.should.equal(401);
       done();
     })

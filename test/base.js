@@ -2,7 +2,7 @@ import should from 'should'
 import _ from 'lodash'
 import server from './server'
 import {genUser} from './util'
-
+import request from 'supertest-as-promised'
 
 export function signin(user){
    return server
@@ -20,10 +20,17 @@ export function signup(user){
   .expect(200)
 }
 
+export function signin_signup(user, cb) {
+  signup(user)
+  .end((err,res) => {
+    signin(user).end(cb)
+  })
+}
+
 describe("用户相关", () => {
   it("用户名注册应该能成功", (done) => {
     signup(genUser())
-    .end((err,res) => {
+    .then((res) => {
       res.status.should.equal(200)
       done()
     })
@@ -31,14 +38,9 @@ describe("用户相关", () => {
 
   it("用户名登陆应该能成功", (done) => {
     const user = genUser()
-    signup(user)
-    .end((err,res) => {
-      signin(user)
-      .end((err,res) => {
-        console.log(res.body.token);
-        res.status.should.equal(200)
-        done()
-      })
+    signin_signup(user, (err,res) => {
+      res.status.should.equal(200)
+      done()
     })
   })
 
