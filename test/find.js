@@ -5,6 +5,8 @@ import {genUser, genMessage} from './util'
 import {signup} from './base'
 import {signup_insert} from './insert'
 
+const userCase = genUser()
+
 
 export function signup_insert_findById(message, cb) {
   signup_insert(message, (err, res) => {
@@ -15,6 +17,15 @@ export function signup_insert_findById(message, cb) {
     .expect(200) // THis is HTTP response
     .end(cb);
   })
+}
+
+export function findByUser(auth, cb) {
+  server
+  .get(`/user/db/mocha/collection/mocha`)
+  .set('authorization', auth)
+  .expect("Content-type", /json/)
+  .expect(200) // THis is HTTP response
+  .end(cb);
 }
 
 describe("查找", () => {

@@ -21,7 +21,9 @@ auth.unless = unless
 export default function middleware(app){
   // app.use('/db/:dbName/collection/', checkApiToken);
   app.use('/db/:dbName',handleCommonReq)
+  app.use('/user/db/:dbName',handleCommonReq)
   app.use(baseUrl, checkFindMethods)
-  app.use('/db/:dbName/collection/', auth.unless({ method: 'GET' }));
+  app.use('/user'+baseUrl, checkFindMethods)
+  app.use('/user/db/:dbName/collection/', auth);
   app.use(handleError)
 }

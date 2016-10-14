@@ -24,3 +24,6 @@ export function genMessage(){
     age: _.random(0, 50)
   }
 }
+
+
+export const userCase = genUser()

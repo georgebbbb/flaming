@@ -4,14 +4,14 @@ import server from './server'
 import {genUser, genMessage} from './util'
 import {signup} from './base'
 import fetch from 'supertest-as-promised'
-
+import {promisify} from 'bluebird'
 
 export function signup_insert(message, cb) {
   signup(genUser())
   .end((err,res) => {
     res.status.should.equal(200)
     server
-    .post("/db/mocha/collection/mocha")
+    .post("/user/db/mocha/collection/mocha")
     .set('authorization', res.body.token)
     .send(message)
     .expect("Content-type", /json/)
@@ -21,9 +21,10 @@ export function signup_insert(message, cb) {
 }
 
 
-function insert(message, cb) {
+function insert(message, auth, cb) {
   server
-  .post("/db/mocha/collection/mocha")
+  .post("/user/db/mocha/collection/mocha")
+  .set('authorization', auth)
   .send(message)
   .expect("Content-type", /json/)
   .expect(200) // THis is HTTP response
@@ -42,7 +43,7 @@ describe("插入", () => {
 
   it("没有登录插入应该会失败", (done) => {
     const message = genMessage()
-    insert(message, (err, res) => {
+    insert(message, null, (err, res) => {
       res.status.should.equal(401);
       done();
     })

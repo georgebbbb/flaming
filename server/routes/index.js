@@ -5,9 +5,11 @@ import {
 import getModel from '../model/index'
 
 export default function routes(app){
-  app.post(baseUrl, (req, res) => {
+  app.post('/user'+baseUrl, (req, res) => {
     const {url} = req.db
     const {collectionName} = req.params
+    const {body} = req
+    body.userId = req.user.uid
     getModel(url).insertOne(collectionName, req.body)
     .then( data => res.json(data))
     .catch( err => console.log(err))
@@ -24,6 +26,15 @@ export default function routes(app){
     })
   })
 
+  app.get('/user' + baseUrl, (req, res) => {
+    const {url, query, methods} = req.db
+    const {collectionName} = req.params
+    query.userId = req.user.uid
+    getModel(url).find(collectionName, query, methods)
+    .then((data) => res.json(data))
+    .catch((err) => console.log(err))
+  })
+
   app.get(baseUrl, (req, res) => {
     const {url, query, methods} = req.db
     const {collectionName} = req.params
@@ -32,7 +43,8 @@ export default function routes(app){
     .catch((err) => console.log(err))
   })
 
-  app.put(`${baseUrl}/:id`, (req, res) => {
+
+  app.put('/user'+`${baseUrl}/:id`, (req, res) => {
     const {url} = req.db
     const {id, collectionName} = req.params
     getModel(url)
@@ -49,7 +61,7 @@ export default function routes(app){
   //   .catch((err) => console.log(err))
   // })
 
-  app.delete(`${baseUrl}/:id`, (req, res) => {
+  app.delete('user/'+`${baseUrl}/:id`, (req, res) => {
     const {url} = req.db
     const {id, collectionName} = req.params
     getModel(url)
@@ -74,7 +86,6 @@ export default function routes(app){
       if(data){
         res.json(data)
       }else {
-        console.log(8889);
         res.status(401).send('username,password error...');
       }
     })
@@ -82,12 +93,10 @@ export default function routes(app){
   })
   //登录
   app.post(signup, (req, res) => {
-    console.log(2222);
     const {username, password} = req.body
     getModel(req.db.url)
     .signup(username, password)
     .then((data) =>{
-      console.log(data)
       return data
     })
     .then((data) => res.json(data))
