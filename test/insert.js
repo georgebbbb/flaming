@@ -4,48 +4,33 @@ import server from './server'
 import {genUser, genMessage} from './util'
 import {signup} from './base'
 import fetch from 'supertest-as-promised'
-import {promisify} from 'bluebird'
-
-export function signup_insert(message, cb) {
-  signup(genUser())
-  .end((err,res) => {
-    res.status.should.equal(200)
-    server
-    .post("/user/db/mocha/collection/mocha")
-    .set('authorization', res.body.token)
-    .send(message)
-    .expect("Content-type", /json/)
-    .expect(200) // THis is HTTP response
-    .end(cb);
-  })
-}
+import Promise from 'bluebird'
 
 
-function insert(message, auth, cb) {
+export const insert = Promise.promisify(function (message, auth, cb) {
   server
   .post("/user/db/mocha/collection/mocha")
   .set('authorization', auth)
   .send(message)
-  .expect("Content-type", /json/)
   .expect(200) // THis is HTTP response
   .end(cb);
-}
+})
 
 describe("插入", () => {
   it("用户名注册后插入信息应该成功", (done) => {
     const message = genMessage()
-    signup_insert(message, (err, res) => {
-      res.status.should.equal(200);
+    const user = genUser()
+    signup(user)
+    .then(res => insert(message, res.body.token))
+    .then(res => {
       res.body.name.should.equal(message.name)
-      done();
+      done()
     })
   })
 
   it("没有登录插入应该会失败", (done) => {
     const message = genMessage()
-    insert(message, null, (err, res) => {
-      res.status.should.equal(401);
-      done();
-    })
+    insert(message, null)
+    .catch(()=> done())
   })
 })
