@@ -9,7 +9,7 @@ export default function routes(app){
     const {url} = req.db
     const {collectionName} = req.params
     const {body} = req
-    body.userId = req.user.uid
+    body.userId = req.user._id
     getModel(url).insertOne(collectionName, req.body)
     .then( data => res.json(data))
     .catch( err => console.log(err))
@@ -27,9 +27,11 @@ export default function routes(app){
   })
 
   app.get('/user' + baseUrl, (req, res) => {
-    const {url, query, methods} = req.db
+    const {url, methods} = req.db
     const {collectionName} = req.params
-    query.userId = req.user.uid
+    const query = req.db.query || {
+      userId: req.user._id
+    }
     getModel(url).find(collectionName, query, methods)
     .then((data) => res.json(data))
     .catch((err) => console.log(err))

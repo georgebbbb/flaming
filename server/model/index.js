@@ -68,10 +68,10 @@ class Model {
     return this.findOne('user', {username: username})
     .then((user) => {
       console.log(user,11119);
-      console.log(jwt.sign({uid: user._id}, `${apiJWTCount}${dbname}`));
+      console.log(jwt.sign({_id: user._id}, `${apiJWTCount}${dbname}`));
       if(user){
         return {
-          token: jwt.sign({uid: user._id}, `${apiJWTCount}${dbname}`)
+          token: jwt.sign({_id: user._id}, `${apiJWTCount}${dbname}`)
         }
       }else {
         return false
@@ -87,7 +87,7 @@ class Model {
       if(user && md5(password) === user.password){
         return {
           token: jwt.sign({
-            uid: user._id}, userJWTCount
+            _id: user._id}, userJWTCount
         )}
       }else {
         return false
@@ -97,7 +97,7 @@ class Model {
   signup(username, password){
     return this.insertOne('user', {username: username, password: md5(password)})
     .then((data) => ({token: jwt.sign({
-      uid: data._id
+      _id: data._id
     }, userJWTCount)}))
   }
 }
