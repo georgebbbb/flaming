@@ -63,7 +63,8 @@ export default function routes(app){
   //   .catch((err) => console.log(err))
   // })
 
-  app.delete('user/'+`${baseUrl}/:id`, (req, res) => {
+  app.delete('/user'+`${baseUrl}/:id`, (req, res) => {
+    console.log(87611)
     const {url} = req.db
     const {id, collectionName} = req.params
     getModel(url)
@@ -79,7 +80,7 @@ export default function routes(app){
   //   .then((data) => res.json(data))
   //   .catch((err) => console.log(err))
   // })
-  //注册
+  //登录
   app.post(signin, (req, res) => {
     const {username, password} = req.body
     getModel(req.db.url)
@@ -93,7 +94,7 @@ export default function routes(app){
     })
     .catch((error) => console.log(error))
   })
-  //登录
+  //注册
   app.post(signup, (req, res) => {
     const {username, password} = req.body
     getModel(req.db.url)
