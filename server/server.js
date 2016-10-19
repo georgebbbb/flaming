@@ -2,7 +2,6 @@ import {mongodbClient, ObjectId} from 'mongodb'
 import express from 'express'
 import {urlencoded, json} from 'body-parser'
 import _ from 'lodash'
-
 import routes from './routes/index'
 import middleware from './middleware/index'
 

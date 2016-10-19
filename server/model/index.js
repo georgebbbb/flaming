@@ -5,7 +5,12 @@ import md5 from 'md5'
 import _ from 'lodash'
 const MongoClient = Promise.promisifyAll(require("mongodb").MongoClient);
 
-import { decorateData } from '../../common/utils'
+function decorateData(data, methods) {
+  _.mapValues(methods, (params, func) => {
+    data = data[func](params)
+  })
+  return data.toArray()
+}
 import {
   apiJWTCount, userJWTCount
 } from '../consts/secret'

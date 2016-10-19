@@ -7,4 +7,4 @@ COPY . /usr/src/app
 
 EXPOSE 8080
 
-ENTRYPOINT npm run dev
+ENTRYPOINT npm run start
