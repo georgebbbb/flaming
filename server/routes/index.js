@@ -15,6 +15,17 @@ export default function routes(app){
     .catch( err => console.log(err))
   })
 
+  app.post(baseUrl, (req, res) => {
+    console.log(1)
+    const {url} = req.db
+    const {collectionName} = req.params
+    const {body} = req
+    getModel(url).insertOne(collectionName, req.body)
+    .then( data => res.json(data))
+    .catch( err => console.log(err))
+  })
+
+
   app.get(`${baseUrl}/:id`, (req, res) => {
     const {url} = req.db
     const {id, collectionName} = req.params
