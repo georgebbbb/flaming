@@ -10,8 +10,21 @@ import {
   apiJWTCount, userJWTCount
 } from '../consts/secret'
 
+var port = process.env.MONGODB_PORT_27017_TCP_PORT||'27017';
+var addr = process.env.MONGODB_PORT_27017_TCP_ADDR||'localhost';
+var instance = process.env.MONGODB_INSTANCE_NAME||'docker';
+var password = process.env.MONGODB_PASSWORD
+var username = process.env.MONGODB_USERNAME
+var url = 'mongodb://'
+if(username && password){
+  url =  url + username + ':' + password +'@' + addr + ':' + port + '/' + instance
+}else {
+  url = url + addr + ':' + port + '/' + instance
+}
+
 class Model {
-  constructor(url){
+  constructor(){
+    console.log(url);
     this.connect  = MongoClient.connect(url)
   }
   insert(collectionName, fileds={}, methods={}){
