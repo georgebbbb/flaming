@@ -49,6 +49,7 @@ export default function routes(app){
   })
 
   app.get(baseUrl, (req, res) => {
+    console.log(baseUrl)
     const {url, query, methods} = req.db
     const {collectionName} = req.params
     getModel(url).find(collectionName, query, methods)
