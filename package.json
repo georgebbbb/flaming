@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel server --out-dir lib",
-    "start": "node lib/server.js",
+    "start": "node ./lib/server.js",
     "dev": "nodemon server/index.js",
     "test": "mocha test/index.js"
   },
