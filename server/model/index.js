@@ -58,7 +58,10 @@ class Model {
     console.log(collectionName)
     return this.connect
     .then((db) => db.collection(collectionName).find(query))
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data)
+      return data
+    })
     .then((data) => decorateData(data, methods))
   }
   updateOne(collectionName, query={}, fileds={}, methods={}){
