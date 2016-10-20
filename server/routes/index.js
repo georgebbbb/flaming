@@ -16,7 +16,6 @@ export default function routes(app){
   })
 
   app.post(baseUrl, (req, res) => {
-    console.log(1)
     const {url} = req.db
     const {collectionName} = req.params
     const {body} = req

@@ -22,7 +22,7 @@ export function checkFindMethods(req, res, next) {
 export function handleCommonReq(req, res, next) {
   const db = {
     dbName: req.params.dbName,
-    collectionName: req.params.dbName,
+    collectionName: req.params.collectionName||"books",
     url: `mongodb://localhost:27017/${req.params.dbName}`
   }
   const header = req.headers["x-db"]
