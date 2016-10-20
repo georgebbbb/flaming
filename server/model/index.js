@@ -55,8 +55,10 @@ class Model {
     return this.findOne(collectionName, {'_id': new ObjectId(id)})
   }
   find(collectionName, query={}, methods={}){
+    console.log(collectionName)
     return this.connect
     .then((db) => db.collection(collectionName).find(query))
+    .then((data) => console.log(data))
     .then((data) => decorateData(data, methods))
   }
   updateOne(collectionName, query={}, fileds={}, methods={}){
