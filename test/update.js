@@ -35,19 +35,37 @@ describe("用户相关更新", () => {
 
         })
       })
-
-
     })
-
-    // .then(res =>
-    // .then(res => {
-    //
-    //
-    //   res.body.name.should.equal(message.name)
-    //   done()
-    // })
   })
 })
+
+export const updateWithoutAuth = Promise.promisify(function (message, cb) {
+  server
+  .put("/db/mocha/collection/mocha")
+  .send(message)
+  .expect(200) // THis is HTTP response
+  .end(cb);
+})
+
+// describe("APP级别更新", () => {
+//   it("用户名注册后插入信息然后在查找应该会有", (done) => {
+//     const message = genMessage()
+//     signup(userCase)
+//     .then(res => {
+//       insert(message, res.body.token)
+//       .then(insertRes => {
+//         console.log(111);
+//         insertRes.body.name = "999"
+//         update(insertRes.body, res.body.token)
+//         .then( updateRes => {
+//           console.log(updateRes.body);
+//           done()
+//
+//         })
+//       })
+//     })
+//   })
+// })
 
 // 比如说拿到的是
 //

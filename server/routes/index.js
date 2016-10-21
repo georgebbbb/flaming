@@ -25,7 +25,7 @@ export default function routes(app){
     .then((data) => res.json(data))
     .catch((err) => console.log(err))
   })
-
+  // Todo:加鉴权
   app.put('/user'+`${baseUrl}`, (req, res) => {
     const {url} = req.db
     const {id, collectionName} = req.params
@@ -98,6 +98,15 @@ export default function routes(app){
     .catch((err) => {
       console.log(error)
     })
+  })
+
+  app.put(baseUrl, (req, res) => {
+    const {url} = req.db
+    const {id, collectionName} = req.params
+    getModel(url)
+    .updateById(collectionName, req.body)
+    .then((data) => res.json(data))
+    .catch((err) => console.log(error))
   })
 
 

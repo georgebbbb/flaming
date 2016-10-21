@@ -107,7 +107,6 @@ class Model {
     return this.findOne('user', {username:username})
     .then((data) => {
       const user = data
-      console.log(user,9999);
       if(user && md5(password) === user.password){
         return {
           token: jwt.sign({
