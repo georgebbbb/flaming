@@ -20,6 +20,11 @@ auth.unless = unless
 
 export default function middleware(app){
   // app.use('/db/:dbName/collection/', checkApiToken);
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+  })
   app.use('/db/:dbName',handleCommonReq)
   app.use('/user/db/:dbName',handleCommonReq)
   app.use(baseUrl, checkFindMethods)
