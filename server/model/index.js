@@ -3,6 +3,7 @@ import {ObjectId} from 'mongodb'
 const jwt = Promise.promisifyAll(require('jsonwebtoken'));
 import md5 from 'md5'
 import _ from 'lodash'
+
 const MongoClient = Promise.promisifyAll(require("mongodb").MongoClient);
 
 function decorateData(data, methods) {
@@ -17,7 +18,7 @@ import {
 
 var port = process.env.MONGODB_PORT_27017_TCP_PORT||'27017';
 var addr = process.env.MONGODB_PORT_27017_TCP_ADDR||'localhost';
-var instance = process.env.MONGODB_INSTANCE_NAME||'Docker';
+var instance = process.env.MONGODB_INSTANCE_NAME||'mocha';
 var password = process.env.MONGODB_PASSWORD
 var username = process.env.MONGODB_USERNAME
 
@@ -58,8 +59,18 @@ class Model {
     return this.connect
     .then(db=> db.collection(collectionName).updateOne(query, fileds))
   }
-  updateById(collectionName, id='', fileds={}, methods={}){
-    return this.updateOne(collectionName, {'_id': new ObjectId(id)}, fileds, methods)
+  updateById(collectionName, fileds={}, methods={}){
+    return this.connect
+    .then(db => {
+      return this.findById(collectionName, fileds._id).then(content => {
+        content =  _.merge(content, fileds)
+        delete content._id
+        return db.collection(collectionName).updateOne(
+            {'_id': new ObjectId(fileds._id)} ,
+            content
+          )
+      })
+    }).then(result => this.findById(collectionName, fileds._id))
   }
   update(collectionName, query={}, fileds={}, methods={}){
     return this.connect

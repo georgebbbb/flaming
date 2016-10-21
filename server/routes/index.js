@@ -26,17 +26,16 @@ export default function routes(app){
     .catch((err) => console.log(err))
   })
 
-  app.put('/user'+`${baseUrl}/:id`, (req, res) => {
+  app.put('/user'+`${baseUrl}`, (req, res) => {
     const {url} = req.db
     const {id, collectionName} = req.params
     getModel(url)
-    .updateById(collectionName, id, req.body)
+    .updateById(collectionName, req.body)
     .then((data) => res.json(data))
     .catch((err) => console.log(error))
   })
 
   app.delete('/user'+`${baseUrl}/:id`, (req, res) => {
-    console.log(87611)
     const {url} = req.db
     const {id, collectionName} = req.params
     getModel(url)

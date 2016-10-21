@@ -37,7 +37,6 @@ export function handleCommonReq(req, res, next) {
 
 //处理错误
 export function handleError(err, req, res, next) {
-  console.log("err.name" + err.name)
   if (err.name === 'UnauthorizedError') {
     res.status(401).send('invalid token...');
   }else {
