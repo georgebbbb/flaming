@@ -9,7 +9,7 @@ import {
 export function checkFindMethods(req, res, next) {
   let {methods} = req.db
   if(methods) {
-    methods = _.keys(methods).filter((method) => ['limit', 'sort'].indexOf(method) === -1)
+    methods = _.keys(methods).filter((method) => ['limit', 'sort', 'skip'].indexOf(method) === -1)
     if(methods.length > 0){
       res.status(500).json({ error: methods.join(',')+"error" })
       return
