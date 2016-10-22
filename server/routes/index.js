@@ -110,8 +110,10 @@ export default function routes(app){
   })
 
   app.delete(`${baseUrl}/:id`, (req, res) => {
+
     const {url} = req.db
     const {id, collectionName} = req.params
+    console.log(`deleing:${id}`);
     getModel(url)
     .removeById(collectionName, id)
     .then((data) => res.json(data))
